@@ -91,7 +91,15 @@ export default class SpotifyService {
         const result = await fetch(`https://api.spotify.com/v1/artists/${artistId}`, {
             method: "GET", headers: { Authorization: `Bearer ${token}` }
         });
-        
+
+        return await result.json();
+    }
+
+    public async fetchPlaylists(token: string) {
+        const result = await fetch("https://api.spotify.com/v1/me/playlists", {
+            method: "GET", headers: { Authorization: `Bearer ${token}` }
+        });
+
         return await result.json();
     }
 }

@@ -1,28 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./Playlists.css";
 
+import SpotifyService from "../services/SpotifyService";
+const spotifyService = new SpotifyService();
+
 export default function Playlists() {
-    const [playlists] = useState<any>([
-        {
-            id: "1",
-            name: "Minha Playlist Rock",
-            description: "As melhores músicas de rock para relaxar",
-            images: [{ url: "https://i.scdn.co/image/ab67616d0000b273a048415db06a5b6fa7ec4e1a" }]
-        },
-        {
-            id: "2",
-            name: "Playlist Chill",
-            description: "Músicas calmas para trabalhar",
-            images: [{ url: "https://i.scdn.co/image/ab67616d0000b273a048415db06a5b6fa7ec4e1a" }]
-        },
-        {
-            id: "3",
-            name: "Favoritas 2024",
-            description: "Minhas músicas favoritas do ano",
-            images: [{ url: "https://i.scdn.co/image/ab67616d0000b273a048415db06a5b6fa7ec4e1a" }]
+    const [playlists, setPlaylists] = useState<any>({});
+
+    useEffect(() => {
+        const playlists = localStorage.getItem("playlists");
+        
+        if (playlists) {
+            setPlaylists(JSON.parse(playlists));
+        } else {
+            const token = localStorage.getItem("token") || "";
+            spotifyService.fetchPlaylists(token)
+                .then(playlistsInfo => {
+                    setPlaylists(playlistsInfo);
+                    localStorage.setItem("playlists", JSON.stringify(playlistsInfo));
+                })
+                .catch(error => {
+                    console.error("Erro ao buscar informações das playlists:", error);
+                });
         }
-    ]);
+    }, []);
 
     return (
         <>

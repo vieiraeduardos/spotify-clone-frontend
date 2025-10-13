@@ -25,6 +25,17 @@ export default function Profile() {
         }
     }, []);
 
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("userProfile");
+        localStorage.removeItem("artist");
+        localStorage.removeItem("albums");
+        localStorage.removeItem("topArtists");
+        localStorage.removeItem("playlists");
+
+        window.location.href = "/";
+    }
+
     return (
         <>
             {userProfile && Object.keys(userProfile).length > 0 ? (
@@ -32,7 +43,11 @@ export default function Profile() {
                     <img className="rounded" src={userProfile.images[0].url} alt="Foto do Usuário" />
                     <h2>{userProfile.display_name}</h2>
 
-                    <button>Sair</button>
+                    <button
+                        onClick={handleLogout}
+                    >
+                        Sair
+                    </button>
                 </div>
             ) : (
                 <p>Carregando...</p>

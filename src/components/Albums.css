@@ -1,0 +1,49 @@
+.album-card {
+  padding: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.album-card:hover {
+  background-color: #242424;
+  transition: 0.3s;
+}
+
+.album-card img {
+  width: 64px;
+  height: 64px;
+  border-radius: 64%;
+}
+
+.album-card h3 {
+  font-size: 14px;
+  margin: 0;
+}
+
+.albums-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+}
+
+.albums-page-header .left-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.albums-page-header .left-content img {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.albums-page-header .left-content span {
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+}

@@ -1,0 +1,29 @@
+.sidebar {
+    width: 250px;
+    padding: 10px 10px 90px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.nav-logo {
+    font-size: 24px;
+}
+
+.nav-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 5px;
+}
+
+.nav-option p {
+    color: #949EA2;
+    font-size: 19px;
+    cursor: pointer;
+}
+
+.nav-option img {
+    width: 24px;
+    height: 25.72px;
+}

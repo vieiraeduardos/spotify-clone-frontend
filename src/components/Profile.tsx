@@ -16,6 +16,7 @@ export default function Profile() {
             spotifyService.fetchProfileInfos(token)
                 .then(profileInfo => {
                     setUserProfile(profileInfo);
+                    localStorage.setItem("userProfile", JSON.stringify(profileInfo));
                 })
                 .catch(error => {
                     console.error("Erro ao buscar informações do perfil:", error);

@@ -22,6 +22,7 @@ export default function Albums() {
             spotifyService.fetchArtistById(token, artistId)
                 .then(artistInfo => {
                     setArtist(artistInfo);
+                    localStorage.setItem("artist", JSON.stringify(artistInfo));
                 })
                 .catch(error => {
                     console.error("Erro ao buscar informações do artista:", error);
@@ -40,6 +41,7 @@ export default function Albums() {
             spotifyService.fetchAlbumsByArtist(token, artistId)
                 .then(albumsInfo => {
                     setAlbums(albumsInfo);
+                    localStorage.setItem("albums", JSON.stringify(albumsInfo));
                 })
                 .catch(error => {
                     console.error("Erro ao buscar informações dos álbuns:", error);

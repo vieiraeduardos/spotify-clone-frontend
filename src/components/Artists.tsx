@@ -19,6 +19,7 @@ export default function Artists() {
             spotifyService.fetchTopArtists(token)
                 .then(artistsInfo => {
                     setArtists(artistsInfo);
+                    localStorage.setItem("topArtists", JSON.stringify(artistsInfo));
                 })
                 .catch(error => {
                     console.error("Erro ao buscar informações do top artistas:", error);

@@ -17,7 +17,7 @@ export default function Sidebar() {
                 <img src={spotifyLogo} className="logo" alt="Spotify logo" width={164} height={49.06} />
             </div>
 
-            <Link to="/">
+            <Link to="/home">
                 <div className="nav-option">
                     <img src={homeIcon} alt="Início" />
                     <p>Home</p>

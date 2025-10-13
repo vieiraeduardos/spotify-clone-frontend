@@ -53,7 +53,7 @@ export default function Albums() {
                 artist && Object.keys(artist).length > 0 && (
                     <div className="albums-page-header">
                         <div className="left-content">
-                            <Link to="/artistas">
+                            <Link to="/artists">
                                 <img src={arrowLeftIcon} alt="Voltar" />
                             </Link>
                             <span>{artist?.name}</span>
@@ -64,10 +64,10 @@ export default function Albums() {
             }
 
             <div className="albums-page-container">
-                {albums && albums?.list?.length > 0 ?
+                {albums && albums?.items?.length > 0 ?
 
                     (
-                        albums.list.map((album: any, index: number) => (
+                        albums.items.map((album: any, index: number) => (
                             <div key={index} className="album-card">
                                 <img src={album.images[0]?.url} alt={album.name} />
                                 <div>

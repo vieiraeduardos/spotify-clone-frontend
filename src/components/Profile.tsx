@@ -5,7 +5,8 @@ import SpotifyService from "../services/SpotifyService";
 const spotifyService = new SpotifyService();
 
 export default function Profile() {
-    const [userProfile, setUserProfile] = useState<any>(null);
+    const [userProfile, setUserProfile] = useState<any>({});
+
     useEffect(() => {
         const userProfile = localStorage.getItem("userProfile");
         if (userProfile) {
@@ -26,7 +27,7 @@ export default function Profile() {
 
     return (
         <>
-            {userProfile ? (
+            {userProfile && Object.keys(userProfile).length > 0 ? (
                 <div className="profile-page-container">
                     <img className="rounded" src={userProfile.images[0].url} alt="Foto do Usuário" />
                     <h2>{userProfile.display_name}</h2>

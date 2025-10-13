@@ -40,6 +40,10 @@ export default class SpotifyService {
             body: params
         });
 
+        if (!result.ok) {
+            throw new Error("Failed to get access token: " + result.statusText);
+        }
+
         const { access_token } = await result.json();
         return access_token;
     }
@@ -68,6 +72,10 @@ export default class SpotifyService {
             method: "GET", headers: { Authorization: `Bearer ${token}` }
         });
 
+        if (!result.ok) {
+            throw new Error("Failed to fetch profile info: " + result.statusText);
+        }
+
         return await result.json();
     }
 
@@ -75,6 +83,10 @@ export default class SpotifyService {
         const result = await fetch("https://api.spotify.com/v1/me/top/artists", {
             method: "GET", headers: { Authorization: `Bearer ${token}` }
         });
+
+        if (!result.ok) {
+            throw new Error("Failed to fetch top artists: " + result.statusText);
+        }
 
         return await result.json();
     }
@@ -84,6 +96,10 @@ export default class SpotifyService {
             method: "GET", headers: { Authorization: `Bearer ${token}` }
         });
 
+        if (!result.ok) {
+            throw new Error("Failed to fetch albums by artist: " + result.statusText);
+        }
+
         return await result.json();
     }
 
@@ -92,6 +108,10 @@ export default class SpotifyService {
             method: "GET", headers: { Authorization: `Bearer ${token}` }
         });
 
+        if (!result.ok) {
+            throw new Error("Failed to fetch artist by ID: " + result.statusText);
+        }
+
         return await result.json();
     }
 
@@ -99,6 +119,10 @@ export default class SpotifyService {
         const result = await fetch("https://api.spotify.com/v1/me/playlists", {
             method: "GET", headers: { Authorization: `Bearer ${token}` }
         });
+
+        if (!result.ok) {
+            throw new Error("Failed to fetch playlists: " + result.statusText);
+        }
 
         return await result.json();
     }

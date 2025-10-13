@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import missingPhoto from "../assets/missing-photo.svg";
 import "./Playlists.css";
 
 import SpotifyService from "../services/SpotifyService";
@@ -39,7 +39,7 @@ export default function Playlists() {
             <div className="playlists-page-container">
                 {playlists && playlists?.items?.length > 0 ? playlists.items.map((playlist: any, index: number) => (
                     <div key={index} className="playlist-card">
-                        <img src={playlist.images[0]?.url} alt={playlist.name} className="playlist-image" />
+                        <img src={playlist?.images?.length > 0 ? playlist.images[0]?.url : missingPhoto} alt={playlist.name} className="playlist-image" />
                         <div className="playlist-info">
                             <h3>{playlist.name}</h3>
                             <p>{playlist.description}</p>

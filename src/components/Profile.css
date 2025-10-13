@@ -1,0 +1,25 @@
+.profile-page-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    gap: 24px;
+    text-align: center;
+}
+
+.profile-page-container .rounded {
+    width: 128px;
+    height: 128px;
+}
+
+.profile-page-container h2 {
+    margin: 0;
+    font-size: 24px;
+    color: white;
+}
+
+.profile-page-container button {
+    width: 113px;
+    height: 42px;    
+}

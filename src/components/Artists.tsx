@@ -7,7 +7,7 @@ import SpotifyService from "../services/SpotifyService";
 const spotifyService = new SpotifyService();
 
 export default function Artists() {
-    const [artists, setArtists] = useState<any>([]);
+    const [artists, setArtists] = useState<any>({});
 
     useEffect(() => {
         const topArtists = localStorage.getItem("topArtists");
@@ -28,21 +28,31 @@ export default function Artists() {
 
     return (
         <>
-            <div className="artists-page-header">
-                <h1>Top Artistas</h1>
-                <p>Aqui você encontra seus artistas preferidos.</p>
-            </div>
+            {
+                artists && artists?.items?.length > 0 ?
+                    (
+                        <div>
+                            <div className="artists-page-header">
+                                <h1>Top Artistas</h1>
+                                <p>Aqui você encontra seus artistas preferidos.</p>
+                            </div>
 
-            <div className="artists-page-container">
-                {artists?.items.map((artist: any) => (
-                    <Link to={`/artists/${artist.id}`} key={artist.id}>
-                        <div className="artist-card">
-                            <img src={artist.images[0]?.url} alt={artist.name} />
-                            <h3>{artist.name}</h3>
+                            <div className="artists-page-container">
+                                {artists?.items.map((artist: any) => (
+                                    <Link to={`/artists/${artist.id}`} key={artist.id}>
+                                        <div className="artist-card">
+                                            <img src={artist.images[0]?.url} alt={artist.name} />
+                                            <h3>{artist.name}</h3>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
                         </div>
-                    </Link>
-                ))}
-            </div>
+                    ) :
+                    (
+                        <p>Carregando...</p>
+                    )
+            }
         </>
     );
 }

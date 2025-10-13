@@ -38,7 +38,7 @@ export default function Sidebar() {
                 </div>
             </Link>
 
-            <Link to="/perfil">
+            <Link to="/profile">
                 <div className="nav-option">
                     <img src={userIcon} alt="Perfil" />
                     <p>Perfil</p>

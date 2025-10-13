@@ -2,7 +2,7 @@ export default class SpotifyService {
     private SPOTIFY_CLIENT_ID: string;
     private REDIRECT_URI: string;
 
-    public constructor() { 
+    public constructor() {
         this.SPOTIFY_CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
         this.REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI;
     }
@@ -61,5 +61,13 @@ export default class SpotifyService {
             .replace(/\+/g, "-")
             .replace(/\//g, "_")
             .replace(/=+$/, "");
+    }
+
+    public async fetchProfileInfos(token: string) {
+        const result = await fetch("https://api.spotify.com/v1/me", {
+            method: "GET", headers: { Authorization: `Bearer ${token}` }
+        });
+
+        return await result.json();
     }
 }

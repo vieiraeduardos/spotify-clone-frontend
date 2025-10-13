@@ -37,7 +37,7 @@ export default function Playlists() {
             </div>
 
             <div className="playlists-page-container">
-                {playlists && playlists.length > 0 ? playlists.map((playlist: any, index: number) => (
+                {playlists && playlists?.items?.length > 0 ? playlists.items.map((playlist: any, index: number) => (
                     <div key={index} className="playlist-card">
                         <img src={playlist.images[0]?.url} alt={playlist.name} className="playlist-image" />
                         <div className="playlist-info">

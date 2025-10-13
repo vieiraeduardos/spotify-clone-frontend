@@ -17,7 +17,7 @@ export default class SpotifyService {
         params.append("client_id", this.SPOTIFY_CLIENT_ID);
         params.append("response_type", "code");
         params.append("redirect_uri", this.REDIRECT_URI);
-        params.append("scope", "user-read-private user-read-email");
+        params.append("scope", "user-read-private user-read-email user-top-read");
         params.append("code_challenge_method", "S256");
         params.append("code_challenge", challenge);
 
@@ -65,6 +65,14 @@ export default class SpotifyService {
 
     public async fetchProfileInfos(token: string) {
         const result = await fetch("https://api.spotify.com/v1/me", {
+            method: "GET", headers: { Authorization: `Bearer ${token}` }
+        });
+
+        return await result.json();
+    }
+
+    public async fetchTopArtists(token: string) {
+        const result = await fetch("https://api.spotify.com/v1/me/top/artists", {
             method: "GET", headers: { Authorization: `Bearer ${token}` }
         });
 

@@ -1,24 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import "./Artists.css";
 
-export default function Artists() {
-    const [artists] = useState<any>({
-        items: [
-            {
-                id: "1",
-                name: "Artista 1",
-                images: [{ url: "https://i.scdn.co/image/ab6761610000e5ebb19cf97aea0a0c0ff1543172" }]
-            },
-            {
-                id: "2",
-                name: "Artista 2",
-                images: [{ url: "https://i.scdn.co/image/ab6761610000e5ebb19cf97aea0a0c0ff1543172" }]
-            }
-        ]
-    });
+import SpotifyService from "../services/SpotifyService";
+const spotifyService = new SpotifyService();
 
+export default function Artists() {
+    const [artists, setArtists] = useState<any>([]);
+
+    useEffect(() => {
+        const topArtists = localStorage.getItem("topArtists");
+        if (topArtists) {
+            setArtists(JSON.parse(topArtists));
+        } else {
+            const token = localStorage.getItem("token") || "";
+
+            spotifyService.fetchTopArtists(token)
+                .then(artistsInfo => {
+                    setArtists(artistsInfo);
+                })
+                .catch(error => {
+                    console.error("Erro ao buscar informações do top artistas:", error);
+                });
+        }
+    }, []);
 
     return (
         <>

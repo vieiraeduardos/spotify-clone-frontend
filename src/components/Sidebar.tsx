@@ -24,7 +24,7 @@ export default function Sidebar() {
                 </div>
             </Link>
 
-            <Link to="/artistas">
+            <Link to="/artists">
                 <div className="nav-option">
                     <img src={discIcon} alt="Artistas" />
                     <p>Artistas</p>

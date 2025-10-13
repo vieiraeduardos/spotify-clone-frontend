@@ -1,0 +1,24 @@
+.artist-card {
+  padding: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.artist-card:hover {
+  background-color: #242424;
+  transition: 0.3s;
+}
+
+.artist-card img {
+  width: 64px;
+  height: 64px;
+  border-radius: 64%;
+}
+
+.artist-card h3 {
+  font-size: 14px;
+  margin: 0;
+}

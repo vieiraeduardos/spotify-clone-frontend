@@ -1,13 +1,26 @@
 .sidebar {
     width: 250px;
-    padding: 10px 10px 90px 10px;
+    padding: 10px 10px 10px 10px;
     display: flex;
     flex-direction: column;
+    height: 100vh;
     gap: 20px;
 }
 
 .nav-logo {
     font-size: 24px;
+}
+
+.nav-main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+}
+
+.nav-bottom {
+    margin-top: auto;
+    padding-bottom: 20px;
 }
 
 .nav-option {

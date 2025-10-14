@@ -24,6 +24,23 @@ main {
   overflow-y: auto;
 }
 
+@media (max-width: 768px) {
+  main {
+    padding: 80px 16px 16px 16px;
+    width: 100%;
+  }
+  
+  .container {
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    padding: 70px 12px 12px 12px;
+  }
+}
+
 .rounded {
   width: 64px;
   height: 64px;

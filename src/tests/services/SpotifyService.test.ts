@@ -104,5 +104,26 @@ describe("SpotifyService", () => {
                 expect.any(Object)
             );
         });
+
+        it("Deveria obter os top artistas com parâmetros personalizados", async () => {
+            const mockArtists = {
+                items: [{ id: "1", name: "Vintage Culture", images: [{ url: "" }] }],
+                total: 1,
+                limit: 10,
+                offset: 5
+            };
+
+            global.fetch = vi.fn().mockResolvedValue({
+                ok: true,
+                json: () => Promise.resolve(mockArtists)
+            });
+
+            await spotifyService.fetchTopArtists("ACCESS_TOKEN", 10, 5);
+
+            expect(fetch).toHaveBeenCalledWith(
+                "https://api.spotify.com/v1/me/top/artists?limit=10&offset=5",
+                expect.any(Object)
+            );
+        });
     });
 });

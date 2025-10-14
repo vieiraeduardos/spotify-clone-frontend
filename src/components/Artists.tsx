@@ -31,7 +31,7 @@ export default function Artists() {
     };
 
     const renderArtistItem = (artist: any, index: number) => (
-        <Link to={`/artists/${artist.id}`} key={artist.id}>
+        <Link to={`/artists/${artist.id}`} key={index}>
             <div className="artist-card">
                 <img src={artist.images[0]?.url} alt={artist.name} />
                 <h3>{artist.name}</h3>

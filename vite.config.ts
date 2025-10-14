@@ -1,3 +1,5 @@
+/// <reference types="vitest" />
+
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
@@ -8,5 +10,12 @@ export default defineConfig({
     port: 8080,
     host: "0.0.0.0",
     allowedHosts: [".onrender.com"]
-  }
+  },
+  test: {
+    coverage: {
+      provider: 'v8', // usa o mecanismo nativo do Node
+      reporter: ['text', 'lcov'], // o SonarQube lê o lcov
+      reportsDirectory: './coverage',
+    },
+  },
 })

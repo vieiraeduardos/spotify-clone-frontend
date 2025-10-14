@@ -174,4 +174,23 @@ describe("SpotifyService", () => {
             );
         });
     });
+
+    describe("fetchArtistById", () => {
+        it("Deveria obter o artista pelo ID com sucesso", async () => {
+            const mockArtist = { id: "1", name: "Vintage Culture" };
+
+            global.fetch = vi.fn().mockResolvedValue({
+                ok: true,
+                json: () => Promise.resolve(mockArtist)
+            });
+
+            const artist = await spotifyService.fetchArtistById("ACCESS_TOKEN", "artist123");
+
+            expect(artist).toEqual(mockArtist);
+            expect(fetch).toHaveBeenCalledWith(
+                "https://api.spotify.com/v1/artists/1",
+                expect.any(Object)
+            );
+        });
+    });
 });

@@ -91,8 +91,8 @@ export default class SpotifyService {
         return await result.json();
     }
 
-    public async fetchAlbumsByArtist(token: string, artistId: string) {
-        const result = await fetch(`https://api.spotify.com/v1/artists/${artistId}/albums`, {
+    public async fetchAlbumsByArtist(token: string, artistId: string, limit: number = 20, offset: number = 0) {
+        const result = await fetch(`https://api.spotify.com/v1/artists/${artistId}/albums?limit=${limit}&offset=${offset}`, {
             method: "GET", headers: { Authorization: `Bearer ${token}` }
         });
 

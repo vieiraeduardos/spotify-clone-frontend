@@ -5,12 +5,53 @@ import arrowLeftIcon from "../assets/arrow-left-icon.svg";
 
 import "./Albums.css";
 
+import Pagination from "./Pagination";
+
 import SpotifyService from "../services/SpotifyService";
 const spotifyService = new SpotifyService();
 
 export default function Albums() {
     const [albums, setAlbums] = useState<any>({});
     const [artist, setArtist] = useState<any>({});
+
+    const loadAlbums = (offset: number = 0) => {
+        const token = localStorage.getItem("token") || "";
+        const artistId = window.location.pathname.split("/")[2];
+
+        spotifyService.fetchAlbumsByArtist(token, artistId, 5, offset)
+            .then(albumsInfo => {
+                setAlbums(albumsInfo);
+                if (offset === 0) {
+                    localStorage.setItem("albums", JSON.stringify(albumsInfo));
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao buscar informações dos álbuns:", error);
+            });
+    };
+
+    const handlePageChange = (newOffset: number) => {
+        loadAlbums(newOffset);
+    };
+
+    const renderAlbumItem = (album: any, index: number) => (
+        <div key={index} className="album-card">
+            <img src={album.images[0]?.url} alt={album.name} />
+            <div>
+                <h3>{album.name}</h3>
+                <p>{album.release_date}</p>
+            </div>
+        </div>
+    );
+
+    useEffect(() => {
+        const albums = localStorage.getItem("albums");
+        if (albums) {
+            setAlbums(JSON.parse(albums));
+        } else {
+            loadAlbums(0);
+        }
+    }, []);
 
     useEffect(() => {
         const artist = localStorage.getItem("artist");
@@ -26,25 +67,6 @@ export default function Albums() {
                 })
                 .catch(error => {
                     console.error("Erro ao buscar informações do artista:", error);
-                });
-        }
-    }, []);
-
-    useEffect(() => {
-        const albums = localStorage.getItem("albums");
-        if (albums) {
-            setAlbums(JSON.parse(albums));
-        } else {
-            const token = localStorage.getItem("token") || "";
-            const artistId = window.location.pathname.split("/")[2];
-
-            spotifyService.fetchAlbumsByArtist(token, artistId)
-                .then(albumsInfo => {
-                    setAlbums(albumsInfo);
-                    localStorage.setItem("albums", JSON.stringify(albumsInfo));
-                })
-                .catch(error => {
-                    console.error("Erro ao buscar informações dos álbuns:", error);
                 });
         }
     }, []);
@@ -65,24 +87,19 @@ export default function Albums() {
                 )
             }
 
-            <div className="albums-page-container">
-                {albums && albums?.items?.length > 0 ?
-
-                    (
-                        albums.items.map((album: any, index: number) => (
-                            <div key={index} className="album-card">
-                                <img src={album.images[0]?.url} alt={album.name} />
-                                <div>
-                                    <h3>{album.name}</h3>
-                                    <p>{album.release_date}</p>
-                                </div>
-                            </div>
-                        ))
-                    ) : (
-                        <div>Nenhum álbum encontrado</div>
-                    )
-                }
-            </div>
+            {albums && albums?.items?.length > 0 ? (
+                <Pagination
+                    items={albums.items}
+                    total={albums.total}
+                    limit={albums.limit}
+                    offset={albums.offset}
+                    onPageChange={handlePageChange}
+                    renderItem={renderAlbumItem}
+                    className="albums-page-container"
+                />
+            ) : (
+                <div>Nenhum álbum encontrado</div>
+            )}
         </div>
     );
 }   

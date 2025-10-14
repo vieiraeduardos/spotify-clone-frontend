@@ -7,8 +7,10 @@ import Pagination from "./Pagination";
 import SpotifyService from "../services/SpotifyService";
 const spotifyService = new SpotifyService();
 
+import type { Playlists, Playlist } from "../types/types";
+
 export default function Playlists() {
-    const [playlists, setPlaylists] = useState<any>({});
+    const [playlists, setPlaylists] = useState<Playlists>({} as Playlists);
     const [showModal, setShowModal] = useState(false);
     const [playlistName, setPlaylistName] = useState("");
 
@@ -32,7 +34,7 @@ export default function Playlists() {
         loadPlaylists(newOffset);
     };
 
-    const renderPlaylistItem = (playlist: any, index: number) => (
+    const renderPlaylistItem = (playlist: Playlist, index: number) => (
         <div key={index} className="playlist-card">
             <img src={playlist?.images?.length > 0 ? playlist.images[0]?.url : missingPhoto} alt={playlist.name} className="playlist-image" />
             <div className="playlist-info">

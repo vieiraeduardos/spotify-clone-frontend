@@ -10,9 +10,11 @@ import Pagination from "./Pagination";
 import SpotifyService from "../services/SpotifyService";
 const spotifyService = new SpotifyService();
 
+import type { Albums, Album, Artist } from "../types/types";
+
 export default function Albums() {
-    const [albums, setAlbums] = useState<any>({});
-    const [artist, setArtist] = useState<any>({});
+    const [albums, setAlbums] = useState<Albums>({ items: [], total: 0, limit: 0, offset: 0 });
+    const [artist, setArtist] = useState<Artist>({ id: "", name: "", images: [] });
 
     const loadAlbums = (offset: number = 0) => {
         const token = localStorage.getItem("token") || "";
@@ -34,7 +36,7 @@ export default function Albums() {
         loadAlbums(newOffset);
     };
 
-    const renderAlbumItem = (album: any, index: number) => (
+    const renderAlbumItem = (album: Album, index: number) => (
         <div key={index} className="album-card">
             <img src={album.images[0]?.url} alt={album.name} />
             <div>
@@ -74,7 +76,7 @@ export default function Albums() {
     return (
         <div>
             {
-                artist && Object.keys(artist).length > 0 && (
+                artist && artist.id && (
                     <div className="albums-page-header">
                         <div className="left-content">
                             <Link to="/artists">
@@ -87,7 +89,7 @@ export default function Albums() {
                 )
             }
 
-            {albums && albums?.items?.length > 0 ? (
+            {albums && albums.items.length > 0 ? (
                 <Pagination
                     items={albums.items}
                     total={albums.total}

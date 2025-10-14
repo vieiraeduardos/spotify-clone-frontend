@@ -1,16 +1,16 @@
 import "./Pagination.css";
 
-interface PaginationProps {
-    items: any[];
+interface PaginationProps<T> {
+    items: T[];
     total: number;
     limit: number;
     offset: number;
     onPageChange: (newOffset: number) => void;
-    renderItem: (item: any, index: number) => React.ReactNode;
+    renderItem: (item: T, index: number) => React.ReactNode;
     className?: string;
 }
 
-export default function Pagination({
+export default function Pagination<T>({
     items,
     total,
     limit,
@@ -18,7 +18,7 @@ export default function Pagination({
     onPageChange,
     renderItem,
     className = ""
-}: PaginationProps) {
+}: PaginationProps<T>) {
     const currentPage = Math.floor(offset / limit) + 1;
     const totalPages = Math.ceil(total / limit);
     
@@ -73,7 +73,7 @@ export default function Pagination({
     return (
         <div className="pagination-container">
             <div className={`pagination-items ${className}`}>
-                {items.map((item, index) => renderItem(item, index))}
+                {items.map((item: T, index: number) => renderItem(item, index))}
             </div>
 
             {totalPages > 1 && (

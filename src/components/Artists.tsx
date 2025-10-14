@@ -7,8 +7,10 @@ import Pagination from "./Pagination";
 import SpotifyService from "../services/SpotifyService";
 const spotifyService = new SpotifyService();
 
+import type { Artist, Artists } from "../types/types";
+
 export default function Artists() {
-    const [artists, setArtists] = useState<any>({});
+    const [artists, setArtists] = useState<Artists>({ items: [], total: 0, limit: 0, offset: 0 });
 
     const loadArtists = (offset: number = 0) => {
         const token = localStorage.getItem("token") || "";
@@ -30,7 +32,7 @@ export default function Artists() {
         loadArtists(newOffset);
     };
 
-    const renderArtistItem = (artist: any, index: number) => (
+    const renderArtistItem = (artist: Artist, index: number) => (
         <Link to={`/artists/${artist.id}`} key={index}>
             <div className="artist-card">
                 <img src={artist.images[0]?.url} alt={artist.name} />

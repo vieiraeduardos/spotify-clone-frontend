@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import missingPhoto from "../assets/missing-photo.svg";
 import "./Playlists.css";
 
+import Pagination from "./Pagination";
+
 import SpotifyService from "../services/SpotifyService";
 const spotifyService = new SpotifyService();
 
@@ -10,21 +12,42 @@ export default function Playlists() {
     const [showModal, setShowModal] = useState(false);
     const [playlistName, setPlaylistName] = useState("");
 
+    const loadPlaylists = (offset: number = 0) => {
+        const token = localStorage.getItem("token") || "";
+
+        spotifyService.fetchPlaylists(token, 5, offset)
+            .then(playlistsInfo => {
+                setPlaylists(playlistsInfo);
+
+                if (offset === 0) {
+                    localStorage.setItem("playlists", JSON.stringify(playlistsInfo));
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao buscar informações das playlists:", error);
+            });
+    };
+
+    const handlePageChange = (newOffset: number) => {
+        loadPlaylists(newOffset);
+    };
+
+    const renderPlaylistItem = (playlist: any, index: number) => (
+        <div key={index} className="playlist-card">
+            <img src={playlist?.images?.length > 0 ? playlist.images[0]?.url : missingPhoto} alt={playlist.name} className="playlist-image" />
+            <div className="playlist-info">
+                <h3>{playlist.name}</h3>
+                <p>{playlist.description}</p>
+            </div>
+        </div>
+    );
+
     useEffect(() => {
         const playlists = localStorage.getItem("playlists");
-
         if (playlists) {
             setPlaylists(JSON.parse(playlists));
         } else {
-            const token = localStorage.getItem("token") || "";
-            spotifyService.fetchPlaylists(token)
-                .then(playlistsInfo => {
-                    setPlaylists(playlistsInfo);
-                    localStorage.setItem("playlists", JSON.stringify(playlistsInfo));
-                })
-                .catch(error => {
-                    console.error("Erro ao buscar informações das playlists:", error);
-                });
+            loadPlaylists(0);
         }
     }, []);
 
@@ -76,17 +99,19 @@ export default function Playlists() {
                 <button onClick={handleCreatePlaylist}>Criar playlist</button>
             </div>
 
-            <div className="playlists-page-container">
-                {playlists && playlists?.items?.length > 0 ? playlists.items.map((playlist: any, index: number) => (
-                    <div key={index} className="playlist-card">
-                        <img src={playlist?.images?.length > 0 ? playlist.images[0]?.url : missingPhoto} alt={playlist.name} className="playlist-image" />
-                        <div className="playlist-info">
-                            <h3>{playlist.name}</h3>
-                            <p>{playlist.description}</p>
-                        </div>
-                    </div>
-                )) : <div>Nenhuma playlist encontrada</div>}
-            </div>
+            {playlists && playlists?.items?.length > 0 ? (
+                <Pagination
+                    items={playlists.items}
+                    total={playlists.total}
+                    limit={playlists.limit}
+                    offset={playlists.offset}
+                    onPageChange={handlePageChange}
+                    renderItem={renderPlaylistItem}
+                    className="playlists-page-container"
+                />
+            ) : (
+                <div>Nenhuma playlist encontrada</div>
+            )}
 
             {showModal && (
                 <div className="modal-overlay" onClick={handleModalClose}>

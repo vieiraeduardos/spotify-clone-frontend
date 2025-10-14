@@ -115,8 +115,8 @@ export default class SpotifyService {
         return await result.json();
     }
 
-    public async fetchPlaylists(token: string) {
-        const result = await fetch("https://api.spotify.com/v1/me/playlists", {
+    public async fetchPlaylists(token: string, limit: number = 20, offset: number = 0) {
+        const result = await fetch(`https://api.spotify.com/v1/me/playlists?limit=${limit}&offset=${offset}`, {
             method: "GET", headers: { Authorization: `Bearer ${token}` }
         });
 

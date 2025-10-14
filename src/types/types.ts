@@ -31,3 +31,17 @@ export interface User {
     email: string;
     images: { url: string }[];
 }
+
+export interface Playlist {
+    id: string;
+    name: string;
+    description: string;
+    images: { url: string }[];
+}
+
+export interface Playlists {
+    items: Playlist[];
+    total: number;
+    limit: number;
+    offset: number;
+}

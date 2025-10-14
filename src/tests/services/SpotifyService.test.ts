@@ -150,4 +150,28 @@ describe("SpotifyService", () => {
             );
         });
     });
+
+    describe("fetchAlbumsByArtist", () => {
+        it("Deveria obter os álbuns do artista com sucesso", async () => {
+            const mockAlbums = {
+                items: [{ id: "1", name: "Nothing but the beat" }],
+                total: 1,
+                limit: 20,
+                offset: 0
+            };
+
+            global.fetch = vi.fn().mockResolvedValue({
+                ok: true,
+                json: () => Promise.resolve(mockAlbums)
+            });
+
+            const albums = await spotifyService.fetchAlbumsByArtist("ACCESS_TOKEN", "1");
+
+            expect(albums).toEqual(mockAlbums);
+            expect(fetch).toHaveBeenCalledWith(
+                "https://api.spotify.com/v1/artists/1/albums?limit=20&offset=0",
+                expect.any(Object)
+            );
+        });
+    });
 });

@@ -220,4 +220,31 @@ describe("SpotifyService", () => {
             );
         });
     });
+
+    describe("Exceptions Handling", () => {
+        it("Deveria lidar com erros de fetch de forma consistente", async () => {
+            global.fetch = vi.fn().mockResolvedValue({
+                ok: false,
+                statusText: "Not Found"
+            });
+
+            await expect(spotifyService.fetchProfileInfos("invalid-token"))
+                .rejects.toThrow("Failed to fetch profile info: Not Found");
+
+            await expect(spotifyService.fetchTopArtists("invalid-token"))
+                .rejects.toThrow("Failed to fetch top artists: Not Found");
+
+            await expect(spotifyService.fetchPlaylists("invalid-token"))
+                .rejects.toThrow("Failed to fetch playlists: Not Found");
+
+            await expect(spotifyService.fetchAlbumsByArtist("invalid-token", "ARTIST_ID"))
+                .rejects.toThrow("Failed to fetch albums by artist: Not Found");
+            
+            await expect(spotifyService.fetchArtistById("invalid-token", "ARTIST_ID"))
+                .rejects.toThrow("Failed to fetch artist by ID: Not Found");
+
+            await expect(spotifyService.createPlaylist("invalid-token", "USER_ID", "Título da Playlist", "Descrição da Playlist"))
+                .rejects.toThrow("Failed to create playlist: Not Found");
+        });
+    });
 });

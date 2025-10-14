@@ -59,4 +59,26 @@ describe("SpotifyService", () => {
                 .rejects.toThrow("Failed to get access token: Unauthorized");
         });
     });
+
+    describe("fetchProfileInfos", () => {
+        it("Deveria obter as informações do usuário com sucesso", async () => {
+            const mockProfile = { id: "1", display_name: "Eduardo" };
+
+            global.fetch = vi.fn().mockResolvedValue({
+                ok: true,
+                json: () => Promise.resolve(mockProfile)
+            });
+
+            const profile = await spotifyService.fetchProfileInfos("ACCESS_TOKEN");
+
+            expect(profile).toEqual(mockProfile);
+            expect(fetch).toHaveBeenCalledWith(
+                "https://api.spotify.com/v1/me",
+                expect.objectContaining({
+                    method: "GET",
+                    headers: { Authorization: "Bearer ACCESS_TOKEN" }
+                })
+            );
+        });
+    });
 });

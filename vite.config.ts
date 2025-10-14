@@ -76,6 +76,11 @@ export default defineConfig({
     host: "0.0.0.0",
     allowedHosts: [".onrender.com"]
   },
+  preview: {
+    port: 8080,
+    host: "0.0.0.0",
+    allowedHosts: [".onrender.com"]
+  },
   test: {
     coverage: {
       provider: 'v8', // usa o mecanismo nativo do Node

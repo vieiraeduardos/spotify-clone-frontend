@@ -1,0 +1,11 @@
+services:
+  luiza-labs:
+    container_name: luiza-labs
+    image: luiza-labs
+    restart: always
+    environment:
+      - VITE_SPOTIFY_CLIENT_ID=""
+      - VITE_REDIRECT_URI=""
+    ports: 
+      - "8080:8080"
+    entrypoint: "npm run preview"

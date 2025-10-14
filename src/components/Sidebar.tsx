@@ -17,14 +17,14 @@ export default function Sidebar() {
                 <img src={spotifyLogo} className="logo" alt="Spotify logo" width={164} height={49.06} />
             </div>
 
-            <Link to="/">
+            <Link to="/home">
                 <div className="nav-option">
                     <img src={homeIcon} alt="Início" />
                     <p>Home</p>
                 </div>
             </Link>
 
-            <Link to="/artistas">
+            <Link to="/artists">
                 <div className="nav-option">
                     <img src={discIcon} alt="Artistas" />
                     <p>Artistas</p>
@@ -38,7 +38,7 @@ export default function Sidebar() {
                 </div>
             </Link>
 
-            <Link to="/perfil">
+            <Link to="/profile">
                 <div className="nav-option">
                     <img src={userIcon} alt="Perfil" />
                     <p>Perfil</p>

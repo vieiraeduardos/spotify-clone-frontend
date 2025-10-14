@@ -1,49 +1,105 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import arrowLeftIcon from "../assets/arrow-left-icon.svg";
 
 import "./Albums.css";
 
+import Pagination from "./Pagination";
+
+import SpotifyService from "../services/SpotifyService";
+const spotifyService = new SpotifyService();
+
 export default function Albums() {
-    const [albums] = useState<any>([
-        {
-            id: "1",
-            name: "Album 1",
-            release_date: "2024-01-01",
-            images: [{ url: "https://i.scdn.co/image/ab6761610000e5ebb19cf97aea0a0c0ff1543172" }]
-        },
-        {
-            id: "2",
-            name: "Album 2",
-            release_date: "2023-12-15",
-            images: [{ url: "https://i.scdn.co/image/ab6761610000e5ebb19cf97aea0a0c0ff1543172" }]
+    const [albums, setAlbums] = useState<any>({});
+    const [artist, setArtist] = useState<any>({});
+
+    const loadAlbums = (offset: number = 0) => {
+        const token = localStorage.getItem("token") || "";
+        const artistId = window.location.pathname.split("/")[2];
+
+        spotifyService.fetchAlbumsByArtist(token, artistId, 5, offset)
+            .then(albumsInfo => {
+                setAlbums(albumsInfo);
+                if (offset === 0) {
+                    localStorage.setItem("albums", JSON.stringify(albumsInfo));
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao buscar informações dos álbuns:", error);
+            });
+    };
+
+    const handlePageChange = (newOffset: number) => {
+        loadAlbums(newOffset);
+    };
+
+    const renderAlbumItem = (album: any, index: number) => (
+        <div key={index} className="album-card">
+            <img src={album.images[0]?.url} alt={album.name} />
+            <div>
+                <h3>{album.name}</h3>
+                <p>{album.release_date}</p>
+            </div>
+        </div>
+    );
+
+    useEffect(() => {
+        const albums = localStorage.getItem("albums");
+        if (albums) {
+            setAlbums(JSON.parse(albums));
+        } else {
+            loadAlbums(0);
         }
-    ]);
+    }, []);
+
+    useEffect(() => {
+        const artist = localStorage.getItem("artist");
+        if (artist) {
+            setArtist(JSON.parse(artist));
+        } else {
+            const artistId = window.location.pathname.split("/")[2];
+            const token = localStorage.getItem("token") || "";
+            spotifyService.fetchArtistById(token, artistId)
+                .then(artistInfo => {
+                    setArtist(artistInfo);
+                    localStorage.setItem("artist", JSON.stringify(artistInfo));
+                })
+                .catch(error => {
+                    console.error("Erro ao buscar informações do artista:", error);
+                });
+        }
+    }, []);
 
     return (
         <div>
-            <div className="albums-page-header">
-                <div className="left-content">
-                    <Link to="/artistas">
-                        <img src={arrowLeftIcon} alt="Voltar" />
-                    </Link>
-                    <span>Nome do Artista</span>
-                </div>
-                <img className="rounded" src="https://i.scdn.co/image/ab6761610000e5ebb19cf97aea0a0c0ff1543172" alt="Foto do Artista" />
-            </div>
-
-            <div className="albums-page-container">
-                {albums && albums.length > 0 ? albums.map((album: any, index: number) => (
-                    <div key={index} className="album-card">
-                        <img src={album.images[0]?.url} alt={album.name} />
-                        <div>
-                            <h3>{album.name}</h3>
-                            <p>{album.release_date}</p>
+            {
+                artist && Object.keys(artist).length > 0 && (
+                    <div className="albums-page-header">
+                        <div className="left-content">
+                            <Link to="/artists">
+                                <img src={arrowLeftIcon} alt="Voltar" />
+                            </Link>
+                            <span>{artist?.name}</span>
                         </div>
+                        <img className="rounded" src={artist?.images[0]?.url} alt="Foto do Artista" />
                     </div>
-                )) : <div>Nenhum álbum encontrado</div>}
-            </div>
+                )
+            }
+
+            {albums && albums?.items?.length > 0 ? (
+                <Pagination
+                    items={albums.items}
+                    total={albums.total}
+                    limit={albums.limit}
+                    offset={albums.offset}
+                    onPageChange={handlePageChange}
+                    renderItem={renderAlbumItem}
+                    className="albums-page-container"
+                />
+            ) : (
+                <div>Nenhum álbum encontrado</div>
+            )}
         </div>
     );
 }   

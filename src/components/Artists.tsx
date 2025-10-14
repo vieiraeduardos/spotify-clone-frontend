@@ -1,24 +1,52 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import "./Artists.css";
+import Pagination from "./Pagination";
+
+import SpotifyService from "../services/SpotifyService";
+const spotifyService = new SpotifyService();
 
 export default function Artists() {
-    const [artists] = useState<any>({
-        items: [
-            {
-                id: "1",
-                name: "Artista 1",
-                images: [{ url: "https://i.scdn.co/image/ab6761610000e5ebb19cf97aea0a0c0ff1543172" }]
-            },
-            {
-                id: "2",
-                name: "Artista 2",
-                images: [{ url: "https://i.scdn.co/image/ab6761610000e5ebb19cf97aea0a0c0ff1543172" }]
-            }
-        ]
-    });
+    const [artists, setArtists] = useState<any>({});
 
+    const loadArtists = (offset: number = 0) => {
+        const token = localStorage.getItem("token") || "";
+
+        spotifyService.fetchTopArtists(token, 5, offset)
+            .then(artistsInfo => {
+                setArtists(artistsInfo);
+
+                if (offset === 0) {
+                    localStorage.setItem("topArtists", JSON.stringify(artistsInfo));
+                }
+            })
+            .catch(error => {
+                console.error("Erro ao buscar informações do top artistas:", error);
+            });
+    };
+
+    const handlePageChange = (newOffset: number) => {
+        loadArtists(newOffset);
+    };
+
+    const renderArtistItem = (artist: any, index: number) => (
+        <Link to={`/artists/${artist.id}`} key={index}>
+            <div className="artist-card">
+                <img src={artist.images[0]?.url} alt={artist.name} />
+                <h3>{artist.name}</h3>
+            </div>
+        </Link>
+    );
+
+    useEffect(() => {
+        const topArtists = localStorage.getItem("topArtists");
+        if (topArtists) {
+            setArtists(JSON.parse(topArtists));
+        } else {
+            loadArtists(0);
+        }
+    }, []);
 
     return (
         <>
@@ -27,16 +55,19 @@ export default function Artists() {
                 <p>Aqui você encontra seus artistas preferidos.</p>
             </div>
 
-            <div className="artists-page-container">
-                {artists?.items.map((artist: any) => (
-                    <Link to={`/artists/${artist.id}`} key={artist.id}>
-                        <div className="artist-card">
-                            <img src={artist.images[0]?.url} alt={artist.name} />
-                            <h3>{artist.name}</h3>
-                        </div>
-                    </Link>
-                ))}
-            </div>
+            {artists && artists?.items?.length > 0 ? (
+                <Pagination
+                    items={artists.items}
+                    total={artists.total || artists.items.length}
+                    limit={artists.limit || 20}
+                    offset={artists.offset || 0}
+                    onPageChange={handlePageChange}
+                    renderItem={renderArtistItem}
+                    className="artists-page-container"
+                />
+            ) : (
+                <p>Nenhum artista encontrado</p>
+            )}
         </>
     );
 }

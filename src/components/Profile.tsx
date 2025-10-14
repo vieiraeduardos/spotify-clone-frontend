@@ -1,14 +1,57 @@
+import { useEffect, useState } from "react";
 import "./Profile.css";
 
+import SpotifyService from "../services/SpotifyService";
+const spotifyService = new SpotifyService();
+
 export default function Profile() {
+    const [userProfile, setUserProfile] = useState<any>({});
+
+    useEffect(() => {
+        const userProfile = localStorage.getItem("userProfile");
+        if (userProfile) {
+            setUserProfile(JSON.parse(userProfile));
+        } else {
+            const token = localStorage.getItem("token") || "";
+
+            spotifyService.fetchProfileInfos(token)
+                .then(profileInfo => {
+                    setUserProfile(profileInfo);
+                    localStorage.setItem("userProfile", JSON.stringify(profileInfo));
+                })
+                .catch(error => {
+                    console.error("Erro ao buscar informações do perfil:", error);
+                });
+        }
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("userProfile");
+        localStorage.removeItem("artist");
+        localStorage.removeItem("albums");
+        localStorage.removeItem("topArtists");
+        localStorage.removeItem("playlists");
+
+        window.location.href = "/";
+    }
+
     return (
         <>
-            <div className="profile-page-container">
-                <img className="rounded" src="https://i.scdn.co/image/ab6761610000e5ebb19cf97aea0a0c0ff1543172" alt="Foto do Usuário" />
-                <h2>Eduardo Vieira</h2>
+            {userProfile && Object.keys(userProfile).length > 0 ? (
+                <div className="profile-page-container">
+                    <img className="rounded" src={userProfile.images[0].url} alt="Foto do Usuário" />
+                    <h2>{userProfile.display_name}</h2>
 
-                <button>Sair</button>
-            </div>
+                    <button
+                        onClick={handleLogout}
+                    >
+                        Sair
+                    </button>
+                </div>
+            ) : (
+                <p>Carregando...</p>
+            )}
         </>
     );
 }

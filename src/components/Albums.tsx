@@ -82,7 +82,7 @@ export default function Albums() {
                             <Link to="/artists">
                                 <img src={arrowLeftIcon} alt="Voltar" />
                             </Link>
-                            <span>{artist?.name}</span>
+                            <h3>{artist?.name}</h3>
                         </div>
                         <img className="rounded" src={artist?.images[0]?.url} alt="Foto do Artista" />
                     </div>

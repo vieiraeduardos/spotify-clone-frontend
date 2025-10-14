@@ -53,8 +53,10 @@ export default function Artists() {
     return (
         <>
             <div className="artists-page-header">
-                <h1>Top Artistas</h1>
-                <p>Aqui você encontra seus artistas preferidos.</p>
+                <div className="left-content">
+                    <h3>Top Artistas</h3>
+                    <p>Aqui você encontra seus artistas preferidos.</p>
+                </div>
             </div>
 
             {artists && artists?.items?.length > 0 ? (

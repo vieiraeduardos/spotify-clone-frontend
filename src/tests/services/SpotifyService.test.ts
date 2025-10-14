@@ -126,4 +126,28 @@ describe("SpotifyService", () => {
             );
         });
     });
+
+    describe("fetchPlaylists", () => {
+        it("Deveria obter as playlists com sucesso", async () => {
+            const mockPlaylists = {
+                items: [{ id: "MC Pipokinha", name: "Música Popular Brasileira", images: [{ url: "" }] }],
+                total: 1,
+                limit: 20,
+                offset: 0
+            };
+
+            global.fetch = vi.fn().mockResolvedValue({
+                ok: true,
+                json: () => Promise.resolve(mockPlaylists)
+            });
+
+            const playlists = await spotifyService.fetchPlaylists("ACCESS_TOKEN");
+
+            expect(playlists).toEqual(mockPlaylists);
+            expect(fetch).toHaveBeenCalledWith(
+                "https://api.spotify.com/v1/me/playlists?limit=20&offset=0",
+                expect.any(Object)
+            );
+        });
+    });
 });

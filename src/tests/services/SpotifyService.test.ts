@@ -184,12 +184,39 @@ describe("SpotifyService", () => {
                 json: () => Promise.resolve(mockArtist)
             });
 
-            const artist = await spotifyService.fetchArtistById("ACCESS_TOKEN", "artist123");
+            const artist = await spotifyService.fetchArtistById("ACCESS_TOKEN", "1");
 
             expect(artist).toEqual(mockArtist);
             expect(fetch).toHaveBeenCalledWith(
                 "https://api.spotify.com/v1/artists/1",
                 expect.any(Object)
+            );
+        });
+    });
+
+    describe("createPlaylist", () => {
+        it("Deveria criar uma nova playlist com sucesso", async () => {
+            global.fetch = vi.fn().mockResolvedValue({
+                ok: true,
+                json: () => Promise.resolve({})
+            });
+
+            await spotifyService.createPlaylist(
+                "ACCESS_TOKEN",
+                "USER_ID",
+                "Título da Playlist",
+                "Descrição da Playlist"
+            );
+
+            expect(fetch).toHaveBeenCalledWith(
+                "https://api.spotify.com/v1/users/USER_ID/playlists",
+                expect.objectContaining({
+                    method: "POST",
+                    headers: {
+                        Authorization: "Bearer ACCESS_TOKEN",
+                        "Content-Type": "application/json"
+                    }
+                })
             );
         });
     });

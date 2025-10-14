@@ -17,3 +17,10 @@ export interface Artist {
     name: string;
     images: { url: string }[];
 }
+
+export interface Artists {
+    items: Artist[];
+    total: number;
+    limit: number;
+    offset: number;
+}

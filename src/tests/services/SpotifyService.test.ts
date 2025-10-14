@@ -41,5 +41,22 @@ describe("SpotifyService", () => {
                 })
             );
         });
+
+        it("Deveria lançar exceção quando a leitura falha", async () => {
+            Object.defineProperty(global, "localStorage", {
+                value: {
+                    getItem: vi.fn().mockReturnValue("VERIFIER")
+                },
+                writable: true
+            });
+
+            global.fetch = vi.fn().mockResolvedValue({
+                ok: false,
+                statusText: "Unauthorized"
+            });
+
+            await expect(spotifyService.getAccessToken("CODE"))
+                .rejects.toThrow("Failed to get access token: Unauthorized");
+        });
     });
 });

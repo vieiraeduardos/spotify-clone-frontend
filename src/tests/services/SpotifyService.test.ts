@@ -81,4 +81,28 @@ describe("SpotifyService", () => {
             );
         });
     });
+
+    describe("fetchTopArtists", () => {
+        it("Deveria obter os top artistas com sucesso", async () => {
+            const mockArtists = {
+                items: [{ id: "1", name: "Vintage Culture", images: [{ url: "" }] }],
+                total: 1,
+                limit: 20,
+                offset: 0
+            };
+
+            global.fetch = vi.fn().mockResolvedValue({
+                ok: true,
+                json: () => Promise.resolve(mockArtists)
+            });
+
+            const artists = await spotifyService.fetchTopArtists("ACCESS_TOKEN");
+
+            expect(artists).toEqual(mockArtists);
+            expect(fetch).toHaveBeenCalledWith(
+                "https://api.spotify.com/v1/me/top/artists?limit=20&offset=0",
+                expect.any(Object)
+            );
+        });
+    });
 });

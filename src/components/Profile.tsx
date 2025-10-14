@@ -4,8 +4,10 @@ import "./Profile.css";
 import SpotifyService from "../services/SpotifyService";
 const spotifyService = new SpotifyService();
 
+import type { User } from "../types/types";
+
 export default function Profile() {
-    const [userProfile, setUserProfile] = useState<any>({});
+    const [userProfile, setUserProfile] = useState<User>({} as User);
 
     useEffect(() => {
         const userProfile = localStorage.getItem("userProfile");

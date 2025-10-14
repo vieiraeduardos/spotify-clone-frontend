@@ -22,3 +22,29 @@
   font-size: 14px;
   margin: 0;
 }
+
+.artists-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+}
+
+.artists-page-header .left-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.artists-page-header .left-content h3 {
+  margin: 0;
+  font-size: 24px;
+  color: white;
+}
+
+.artists-page-header .left-content p {
+  margin: 0;
+  color: #B7B3B6;
+  font-size: 14px;
+}

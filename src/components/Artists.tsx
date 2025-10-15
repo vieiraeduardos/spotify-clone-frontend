@@ -18,10 +18,6 @@ export default function Artists() {
         spotifyService.fetchTopArtists(token, 5, offset)
             .then(artistsInfo => {
                 setArtists(artistsInfo);
-
-                if (offset === 0) {
-                    localStorage.setItem("topArtists", JSON.stringify(artistsInfo));
-                }
             })
             .catch(error => {
                 console.error("Erro ao buscar informações do top artistas:", error);
@@ -42,12 +38,7 @@ export default function Artists() {
     );
 
     useEffect(() => {
-        const topArtists = localStorage.getItem("topArtists");
-        if (topArtists) {
-            setArtists(JSON.parse(topArtists));
-        } else {
-            loadArtists(0);
-        }
+        loadArtists(0);
     }, []);
 
     return (

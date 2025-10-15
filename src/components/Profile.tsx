@@ -10,21 +10,15 @@ export default function Profile() {
     const [userProfile, setUserProfile] = useState<User>({} as User);
 
     useEffect(() => {
-        const userProfile = localStorage.getItem("userProfile");
-        if (userProfile) {
-            setUserProfile(JSON.parse(userProfile));
-        } else {
-            const token = localStorage.getItem("token") || "";
+        const token = localStorage.getItem("token") || "";
 
-            spotifyService.fetchProfileInfos(token)
-                .then(profileInfo => {
-                    setUserProfile(profileInfo);
-                    localStorage.setItem("userProfile", JSON.stringify(profileInfo));
-                })
-                .catch(error => {
-                    console.error("Erro ao buscar informações do perfil:", error);
-                });
-        }
+        spotifyService.fetchProfileInfos(token)
+            .then(profileInfo => {
+                setUserProfile(profileInfo);
+            })
+            .catch(error => {
+                console.error("Erro ao buscar informações do perfil:", error);
+            });
     }, []);
 
     const handleLogout = () => {

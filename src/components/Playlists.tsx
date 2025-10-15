@@ -20,10 +20,6 @@ export default function Playlists() {
         spotifyService.fetchPlaylists(token, 5, offset)
             .then(playlistsInfo => {
                 setPlaylists(playlistsInfo);
-
-                if (offset === 0) {
-                    localStorage.setItem("playlists", JSON.stringify(playlistsInfo));
-                }
             })
             .catch(error => {
                 console.error("Erro ao buscar informações das playlists:", error);
@@ -45,12 +41,7 @@ export default function Playlists() {
     );
 
     useEffect(() => {
-        const playlists = localStorage.getItem("playlists");
-        if (playlists) {
-            setPlaylists(JSON.parse(playlists));
-        } else {
-            loadPlaylists(0);
-        }
+        loadPlaylists(0);
     }, []);
 
     const handleCreatePlaylist = () => {
@@ -74,7 +65,6 @@ export default function Playlists() {
                         spotifyService.fetchPlaylists(token)
                             .then(playlistsInfo => {
                                 setPlaylists(playlistsInfo);
-                                localStorage.setItem("playlists", JSON.stringify(playlistsInfo));
                             })
                             .catch(error => {
                                 console.error("Erro ao buscar informações das playlists:", error);

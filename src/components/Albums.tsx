@@ -23,9 +23,6 @@ export default function Albums() {
         spotifyService.fetchAlbumsByArtist(token, artistId, 5, offset)
             .then(albumsInfo => {
                 setAlbums(albumsInfo);
-                if (offset === 0) {
-                    localStorage.setItem("albums", JSON.stringify(albumsInfo));
-                }
             })
             .catch(error => {
                 console.error("Erro ao buscar informações dos álbuns:", error);
@@ -47,30 +44,20 @@ export default function Albums() {
     );
 
     useEffect(() => {
-        const albums = localStorage.getItem("albums");
-        if (albums) {
-            setAlbums(JSON.parse(albums));
-        } else {
-            loadAlbums(0);
-        }
+        loadAlbums(0);
     }, []);
 
     useEffect(() => {
-        const artist = localStorage.getItem("artist");
-        if (artist) {
-            setArtist(JSON.parse(artist));
-        } else {
-            const artistId = window.location.pathname.split("/")[2];
-            const token = localStorage.getItem("token") || "";
-            spotifyService.fetchArtistById(token, artistId)
-                .then(artistInfo => {
-                    setArtist(artistInfo);
-                    localStorage.setItem("artist", JSON.stringify(artistInfo));
-                })
-                .catch(error => {
-                    console.error("Erro ao buscar informações do artista:", error);
-                });
-        }
+        const artistId = window.location.pathname.split("/")[2];
+
+        const token = localStorage.getItem("token") || "";
+        spotifyService.fetchArtistById(token, artistId)
+            .then(artistInfo => {
+                setArtist(artistInfo);
+            })
+            .catch(error => {
+                console.error("Erro ao buscar informações do artista:", error);
+            });
     }, []);
 
     return (

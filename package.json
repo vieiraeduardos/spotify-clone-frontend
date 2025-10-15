@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
+    "test:ci": "vitest run",
     "coverage": "vitest run --coverage",
     "sonar": "sonar-scanner"
   },

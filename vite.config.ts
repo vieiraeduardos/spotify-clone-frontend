@@ -52,7 +52,7 @@ export default defineConfig({
               cacheName: 'spotify-api-cache',
               expiration: {
                 maxEntries: 100,
-                maxAgeSeconds: 60 * 60 * 24 // 24 horas
+                maxAgeSeconds: 60 * 60 * 1 // 1 hora
               }
             }
           },
@@ -63,7 +63,7 @@ export default defineConfig({
               cacheName: 'spotify-images-cache',
               expiration: {
                 maxEntries: 500,
-                maxAgeSeconds: 60 * 60 * 24 * 7 // 7 dias
+                maxAgeSeconds: 60 * 60 * 1 // 1 hora
               }
             }
           }
@@ -83,8 +83,8 @@ export default defineConfig({
   },
   test: {
     coverage: {
-      provider: 'v8', // usa o mecanismo nativo do Node
-      reporter: ['text', 'lcov'], // o SonarQube lê o lcov
+      provider: 'v8', 
+      reporter: ['text', 'lcov'],
       reportsDirectory: './coverage',
     },
   },

@@ -44,6 +44,16 @@ export default defineConfig({
     },
     workbox: {
       globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+      globDirectory: 'dist',
+      globIgnores: [
+        '**/node_modules/**/*',
+        'sw.js',
+        'workbox-*.js'
+      ],
+      swDest: 'dist/sw.js',
+      cleanupOutdatedCaches: true,
+      clientsClaim: true,
+      skipWaiting: true,
       runtimeCaching: [
         {
           urlPattern: /^https:\/\/api\.spotify\.com\/.*/i,

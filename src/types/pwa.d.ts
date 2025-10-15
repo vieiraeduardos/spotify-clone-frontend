@@ -6,3 +6,12 @@ declare module 'virtual:pwa-register' {
     onOfflineReady?: () => void
   }): (reloadPage?: boolean) => Promise<void>
 }
+
+declare interface BeforeInstallPromptEvent extends Event {
+  prompt(): Promise<void>
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
+}
+
+declare interface WindowEventMap {
+  beforeinstallprompt: BeforeInstallPromptEvent
+}

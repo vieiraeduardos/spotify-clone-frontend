@@ -12,26 +12,29 @@ export default function InstallPWAButton() {
       return
     }
 
-    const handler = (e: Event) => {
+    const handler = (e: BeforeInstallPromptEvent) => {
       e.preventDefault()
       setDeferredPrompt(e)
       setCanInstall(true)
     }
 
-    window.addEventListener('beforeinstallprompt', handler as any)
+    window.addEventListener('beforeinstallprompt', handler)
 
-    return () => window.removeEventListener('beforeinstallprompt', handler as any)
+    return () => window.removeEventListener('beforeinstallprompt', handler)
   }, [])
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) return
-    const promptEvent = deferredPrompt as any
-    promptEvent.prompt()
+    
+    const promptEvent = deferredPrompt as BeforeInstallPromptEvent
+    await promptEvent.prompt()
     const result = await promptEvent.userChoice
+    
     if (result.outcome === 'accepted') {
       console.log('Usuário instalou o app')
       setIsInstalled(true)
     }
+    
     setDeferredPrompt(null)
     setCanInstall(false)
   }

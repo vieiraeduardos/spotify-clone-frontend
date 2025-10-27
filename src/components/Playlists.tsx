@@ -57,27 +57,16 @@ export default function Playlists() {
         if (playlistName.trim()) {
             try {
                 const token = localStorage.getItem("token") || "";
-                const userProfile = localStorage.getItem("userProfile");
-                const userId = userProfile ? JSON.parse(userProfile).id : "";
+                const userId = await spotifyService.fetchProfileInfos(token).then(profile => profile.id);
 
-                spotifyService.createPlaylist(token, userId, playlistName, "")
-                    .then(() => {
-                        spotifyService.fetchPlaylists(token)
-                            .then(playlistsInfo => {
-                                setPlaylists(playlistsInfo);
-                            })
-                            .catch(error => {
-                                console.error("Erro ao buscar informações das playlists:", error);
-                            });
-                    })
-                    .catch(error => {
-                        console.error("Erro ao criar playlist:", error);
-                    });
-
-                handleModalClose();
+                await spotifyService.createPlaylist(token, userId, playlistName, "");
+                const playlistsInfo = await spotifyService.fetchPlaylists(token);
+                setPlaylists(playlistsInfo);
             } catch (error) {
                 console.error("Erro ao criar playlist:", error);
             }
+
+            handleModalClose();
         }
     }
 

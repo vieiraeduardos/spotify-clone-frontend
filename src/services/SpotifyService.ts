@@ -31,7 +31,7 @@ export default class SpotifyService {
     }
 
     public async fetchAlbumsByArtist(token: string, artistId: string, limit: number = 20, offset: number = 0) {
-        const result = await fetch(`${this.SPOTIFY_GATEWAY_BACKEND}/api/spotify/artists/${artistId}/albums?limit=${limit}&offset=${offset}`, {
+        const result = await fetch(`${this.SPOTIFY_GATEWAY_BACKEND}/api/spotify/artist/${artistId}/albums?limit=${limit}&offset=${offset}`, {
             method: "GET", headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -43,7 +43,7 @@ export default class SpotifyService {
     }
 
     public async fetchArtistById(token: string, artistId: string) {
-        const result = await fetch(`${this.SPOTIFY_GATEWAY_BACKEND}/api/spotify/artists/${artistId}`, {
+        const result = await fetch(`${this.SPOTIFY_GATEWAY_BACKEND}/api/spotify/artist/${artistId}`, {
             method: "GET", headers: { Authorization: `Bearer ${token}` }
         });
 

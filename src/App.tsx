@@ -9,18 +9,13 @@ import Sidebar from "./components/Sidebar";
 import Callback from "./components/Callback";
 import { useEffect } from "react";
 
-import SpotifyService from "./services/SpotifyService";
-
-const spotifyService = new SpotifyService();
-
 function App() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const currentPath = window.location.pathname;
     
-    if (!token && currentPath !== "/callback") {
-      spotifyService.redirectToAuthCodeFlow();
+    if (!token) {
+      window.location.href = "https://spotify-gateway.onrender.com/api/login";
     }
   }, []);
 

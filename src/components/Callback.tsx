@@ -1,30 +1,17 @@
 import { useEffect } from "react";
-import SpotifyService from "../services/SpotifyService";
-
-const spotifyService = new SpotifyService();
 
 export default function Callback() {
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get("code");
+        const token = urlParams.get("token");
 
-        if (code) {
-            spotifyService.getAccessToken(code)
-                .then(accessToken => {
-                    if (accessToken) {
-                        localStorage.setItem("token", accessToken);
-                        window.location.href = "/home";
-                    }
-                })
-                .catch(error => {
-                    console.error("Erro ao obter access token:", error);
-                });
+        if (token) {
+            localStorage.setItem("token", token);
+            window.location.href = "/home";
         }
     }, []);
 
     return (
-        <div>
-            <p>Processando autenticação...</p>
-        </div>
+        <></>
     );
 }

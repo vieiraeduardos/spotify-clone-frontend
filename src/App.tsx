@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import Home from "./components/Home";
 import Artists from "./components/Artists";
@@ -9,36 +9,50 @@ import Sidebar from "./components/Sidebar";
 import Callback from "./components/Callback";
 import { useEffect } from "react";
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+  const isCallbackRoute = location.pathname === "/callback";
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     
-    if (!token) {
+    if (!token && !isCallbackRoute) {
       window.location.href = "https://spotify-gateway.onrender.com/api/login";
     }
-  }, []);
+  }, [location.pathname, isCallbackRoute]);
+
+  if (isCallbackRoute) {
+    return (
+      <Routes>
+        <Route path="/callback" element={<Callback />} />
+      </Routes>
+    );
+  }
 
   return (
     <>
       <div className="container">
-
-        <BrowserRouter>
-          <Sidebar />
-          <main>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/artists" element={<Artists />} />
-              <Route path="/playlists" element={<Playlists />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/artists/:id" element={<Albums />} />
-              <Route path="/callback" element={<Callback />} />
-            </Routes>
-          </main>
-        </BrowserRouter>
-      </div >
+        <Sidebar />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/artists" element={<Artists />} />
+            <Route path="/playlists" element={<Playlists />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/artists/:id" element={<Albums />} />
+          </Routes>
+        </main>
+      </div>
     </>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
   )
 }
 

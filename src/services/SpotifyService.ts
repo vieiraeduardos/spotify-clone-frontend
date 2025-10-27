@@ -55,7 +55,7 @@ export default class SpotifyService {
     }
 
     public async fetchPlaylists(token: string, limit: number = 20, offset: number = 0) {
-        const result = await fetch(`${this.SPOTIFY_GATEWAY_BACKEND}/api/spotify/me/playlists?limit=${limit}&offset=${offset}`, {
+        const result = await fetch(`${this.SPOTIFY_GATEWAY_BACKEND}/api/spotify/playlists?limit=${limit}&offset=${offset}`, {
             method: "GET", headers: { Authorization: `Bearer ${token}` }
         });
 

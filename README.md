@@ -1,8 +1,10 @@
-# Luiza Labs - Teste Técnico
+# Spotify Clone Front End
 
-Este é um teste técnico da Luiza Labs. Um aplicação web que replica a experiência do Spotify, utilizando a API oficial para autenticação e dados reais. O projeto demonstra proficiência em desenvolvimento frontend moderno, integração de APIs, PWA e boas práticas de desenvolvimento.
+Um aplicação web que replica a experiência do Spotify, utilizando a API oficial para autenticação e dados reais. O projeto demonstra proficiência em desenvolvimento frontend moderno, integração de APIs, PWA e boas práticas de desenvolvimento.
 
-**Demo Live: [https://luiza-labs.onrender.com](https://luiza-labs.onrender.com)**
+**Demo Live: [https://spotify-frontend-ehu8.onrender.com](https://spotify-frontend-ehu8.onrender.com)**
+
+**Back End: [https://github.com/vieiraeduardos/spotify-clone-backend](https://github.com/vieiraeduardos/spotify-clone-backend)**
 
 
 ### 🏆 Requisitos Implementados
@@ -73,8 +75,8 @@ Este é um teste técnico da Luiza Labs. Um aplicação web que replica a experi
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/vieiraeduardos/luiza-labs.git
-cd luiza-labs
+git clone https://github.com/vieiraeduardos/spotify-clone-frontend.git
+cd spotify-clone-frontend
 
 # 2. Instale as dependências
 npm install
@@ -82,8 +84,7 @@ npm install
 # 3. Configure as variáveis de ambiente
 cp .env.example .env
 # Edite o .env com suas credenciais:
-# VITE_SPOTIFY_CLIENT_ID=seu_client_id_aqui
-# VITE_REDIRECT_URI=http://localhost:8080/callback
+# VITE_SPOTIFY_GATEWAY_BACKEND=http://localhost:8080/callback
 
 # 4. Execute em modo desenvolvimento
 npm run dev
@@ -95,14 +96,14 @@ npm run dev
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/vieiraeduardos/luiza-labs.git
-cd luiza-labs
+git clone https://github.com/vieiraeduardos/spotify-clone-frontend.git
+cd spotify-clone-frontend
 
 # 2. Configure o compose.yaml
 # Edite as variáveis de ambiente no arquivo
 
 # 3. Build e execute
-docker build -t luiza-labs .
+docker build -t spotify-clone-frontend .
 docker compose up -d
 
 # 4. Acesse http://localhost:8080
@@ -128,22 +129,6 @@ npm run coverage
 
 ### Mobile
 ![Mobile View](docs/images/mobile.png)
-
-
-## 📝 Observações e Pontos de Melhoria
-
-### 🔹 Separação entre Frontend e Backend
-Atualmente, o **frontend** e o **backend** estão integrados na mesma aplicação Vite.  
-Separar essas camadas traria ganhos significativos de **segurança** e **escalabilidade**:
-
-- O **frontend** não precisaria mais armazenar **tokens sensíveis** no `localStorage` nem enviá-los diretamente nas requisições à **API do Spotify**.  
-- O **backend** poderia gerenciar um **token de sessão próprio**, usado para intermediar as chamadas à API externa, evitando a exposição de credenciais.  
-- Essa separação também permitiria **escalar** cada módulo de forma independente, otimizando recursos e facilitando a manutenção do sistema.
-
-### 🔹 CI/CD
-Atualmente, a aplicação é implantada automaticamente por meio da **Render**, simplificando o processo de deploy.  
-Com o uso do **Dockerfile**, é possível criar **pipelines personalizados** em ferramentas como **GitHub Actions** ou **Jenkins**, permitindo maior controle e flexibilidade no processo de integração e entrega contínua.
-
 
 ## 👨‍💻 Autor
 
